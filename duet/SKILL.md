@@ -3,7 +3,7 @@ name: duet
 description: "Use when you want Hermes to simulate Ashima Duet: always fan a substantive question out to Claude and GPT-family perspectives, present both clearly, and optionally run a critique round before synthesis."
 version: 0.1.0
 author: Hermes Agent
-license: MIT
+license: Apache-2.0
 metadata:
   hermes:
     tags: [ashima, duet, brainstorming, claude, gpt, compare]

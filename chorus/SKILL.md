@@ -3,7 +3,7 @@ name: chorus
 description: "Use when you want Hermes to simulate Ashima Chorus: gather change context, draft documentation or release notes, delegate factual code investigation when needed, and optionally route the draft through an independent review pass."
 version: 0.1.0
 author: Hermes Agent
-license: MIT
+license: Apache-2.0
 metadata:
   hermes:
     tags: [ashima, chorus, docs, changelog, release-notes, review]

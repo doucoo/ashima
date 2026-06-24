@@ -3,7 +3,7 @@ name: ashima
 description: "Use when the user wants Hermes to simulate Ashima behavior. Route to `aria` for coding orchestration, `duet` for dual-perspective thinking, and `chorus` for documentation workflows."
 version: 0.1.0
 author: Hermes Agent
-license: MIT
+license: Apache-2.0
 metadata:
   hermes:
     tags: [ashima, router, orchestration, aria, duet, chorus]

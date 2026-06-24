@@ -3,7 +3,7 @@ name: aria
 description: "Use when you want Hermes to simulate Ashima Aria: Hermes orchestrates, Codex implements by default, Claude reviews by default, with isolated task prompts and explicit verification."
 version: 0.1.0
 author: Hermes Agent
-license: MIT
+license: Apache-2.0
 metadata:
   hermes:
     tags: [ashima, aria, orchestration, codex, claude, review]

@@ -72,4 +72,4 @@ These are process skills — they define orchestration workflows for Hermes. The
 
 ## License
 
-MIT
+Apache-2.0
