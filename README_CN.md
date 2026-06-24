@@ -88,6 +88,17 @@ ashima/
 └── LICENSE            ← Apache-2.0
 ```
 
+## 仓库内工作流文档
+
+当前仓库先在 `ashima` 内部试运行自己的项目治理工作流，成熟后再考虑向其它项目推广。
+
+- [全局工作台](docs/global-workbench.md)
+- [全局复利与踩坑日志](docs/global-compounding-and-pitfalls-log.md)
+- [新项目 SOP](docs/new-project-sop.md)
+- [AGENTS.md](AGENTS.md) —— 这些仓库内规则的最高优先级入口
+
+这些治理规则当前只在 `ashima` 仓库内部生效。
+
 ## 许可证
 
 Apache-2.0

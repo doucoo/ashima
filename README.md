@@ -70,6 +70,17 @@ These are process skills — they define orchestration workflows for Hermes. The
 - [Architecture](docs/architecture.md)
 - [Changelog](CHANGELOG.md)
 
+## Internal Workflow Docs
+
+This repository currently pilots its own internal project-governance workflow before any broader rollout.
+
+- [Global Workbench](docs/global-workbench.md)
+- [Global Compounding and Pitfalls Log](docs/global-compounding-and-pitfalls-log.md)
+- [New Project SOP](docs/new-project-sop.md)
+- [AGENTS.md](AGENTS.md) — highest-priority entry point for these repository-local rules
+
+These governance rules currently apply inside the `ashima` repository only.
+
 ## License
 
 Apache-2.0
