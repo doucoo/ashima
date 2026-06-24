@@ -47,6 +47,24 @@ Unless the user says otherwise, follow these defaults:
 3. **Hermes role:** planning, prompt construction, diff inspection, verification, and final synthesis.
 4. **No git commit / push / merge** unless the user explicitly authorizes it.
 5. **Verification is mandatory** before claiming success.
+6. **Default deliverable:** verified diff / changed files / validation result, not an automatic merge outcome.
+
+## Worker Preflight
+
+Before dispatching the default implementer/reviewer pair, confirm they are actually available in the current environment.
+
+Minimum preflight questions:
+
+- Can the intended implementer be invoked in this environment?
+- Can the intended reviewer be invoked in this environment?
+- If one of them is unavailable, what is the fallback plan?
+
+If the default reviewer is unavailable, say so explicitly and either:
+
+1. switch to an available alternative reviewer, or
+2. report that independent review is currently degraded
+
+Do not silently promise Codex+Claude if the environment cannot actually support both.
 
 ## Workflow
 
@@ -56,31 +74,41 @@ Unless the user says otherwise, follow these defaults:
 2. Gather only the minimum repo context needed to scope the task.
    Completion criterion: Hermes has enough evidence to describe what Codex should change without guessing.
 
-3. Dispatch implementation to Codex.
+3. Decide whether an explicit investigation round is needed before implementation.
+   - If the root cause, intended behavior, or relevant code path is unclear, dispatch a bounded read-only investigation first.
+   - Prefer an investigation round for debugging, regressions, architecture questions, and ambiguous bug reports.
+   Completion criterion: Hermes either has enough evidence to proceed directly, or has completed an investigation round with usable findings.
+
+4. Dispatch implementation to Codex.
    - Prefer the existing Codex workflow already captured in `hermes-codex-delegation`.
    - Give Codex a precise, bounded task.
    - Include exact file paths, expected behavior, and required test/build commands.
    - Include `不要做 git commit`.
    Completion criterion: Codex has produced a concrete result, patch, or diff-backed summary.
 
-4. Inspect Codex's output before review.
+5. Inspect Codex's output before review.
    - Check changed files.
    - Check for scope creep.
    - Check whether Codex actually ran the requested validation.
    Completion criterion: Hermes can summarize what changed and what still needs independent review.
 
-5. Route the result to Claude for review.
+6. Run deterministic gates before involving the reviewer.
+   - Prefer local tests, lint, typecheck, or build commands that directly match the task.
+   - If the gates are already red on the current change, send fixes back to the implementer before spending reviewer effort.
+   Completion criterion: either the relevant deterministic gates are green, or Hermes has identified the concrete blocking failures that must be fixed first.
+
+7. Route the result to Claude for review.
    - Claude is the default reviewer.
    - Give Claude the task summary, acceptance criteria, and diff or changed-file context.
    - Ask Claude to find bugs, edge cases, regressions, missing tests, or mismatches against the contract.
    Completion criterion: Claude returns a review that is specific enough to act on.
 
-6. If Claude finds issues, send a focused fix round back to Codex.
+8. If Claude finds issues, send a focused fix round back to Codex.
    - Reuse the same task thread if available, otherwise issue a new tightly scoped fix prompt.
    - Include only actionable review findings.
    Completion criterion: Codex addresses the review findings and re-runs the relevant validation.
 
-7. Hermes performs final verification.
+9. Hermes performs final verification.
    - Review the final diff directly.
    - Run the most relevant local validation that Hermes can run.
    - Report blockers honestly if tools or environment prevent full verification.
@@ -104,6 +132,38 @@ When prompting Claude as reviewer, always include:
 - The acceptance criteria.
 - The exact diff or changed-file list.
 - The review goal: find bugs, regressions, missing validation, or edge cases.
+
+## Failure Recovery Rules
+
+When something goes wrong, do not keep blindly looping the same pattern.
+
+1. **Implementer unavailable.**
+   Say so explicitly and switch to an available implementation path only if the user permits an alternative.
+
+2. **Reviewer unavailable.**
+   Say that independent review is degraded and distinguish that from full verification.
+
+3. **Investigation remains inconclusive.**
+   Stop guessing. Report the ambiguity, what evidence was collected, and what is still missing.
+
+4. **Deterministic gates fail before review.**
+   Send those concrete failures back to the implementer first; do not waste reviewer effort on obviously red changes.
+
+5. **Reviewer result is empty, vague, or malformed.**
+   Retry once with a tighter prompt and clearer contract. If still unclear, report degraded review quality explicitly.
+
+6. **Repeated fix loops are not converging.**
+   After a small number of focused loops, stop and escalate with the remaining blockers instead of pretending progress.
+
+## Deliverable Discipline
+
+By default, Aria's deliverable is one of the following:
+
+- a verified diff-backed implementation summary
+- a list of changed files plus validation evidence
+- a blocker report with direct evidence
+
+Do not imply that the task is "done" merely because a patch exists. The work is only complete when the implementation, review, and verification state are all explicitly accounted for.
 
 ## Scope Discipline
 
@@ -140,12 +200,21 @@ Do not claim these unless actually present in the current run:
 5. **Letting review become rewrite.**
    Claude should critique and point out issues; Hermes decides whether to send fixes back to Codex.
 
+6. **Skipping worker availability checks.**
+   Default tool roles are useful only if those tools can actually run in the current environment.
+
+7. **Using the reviewer before deterministic gates.**
+   If tests/lint/typecheck are already red, review effort is often wasted until the obvious failures are fixed.
+
 ## Verification Checklist
 
 - [ ] The task is genuinely a coding/orchestration task.
 - [ ] Codex was used as default implementer unless the user overrode it.
 - [ ] Claude was used as default reviewer unless the user overrode it.
+- [ ] Worker availability was checked or otherwise grounded in the current environment.
+- [ ] An investigation round was used when the root cause or desired behavior was unclear.
 - [ ] Implementer prompt included files, behavior, boundaries, and validation.
+- [ ] Relevant deterministic gates were run or explicitly evaluated before review.
 - [ ] Reviewer prompt included contract plus concrete diff context.
 - [ ] Hermes directly inspected final changes.
 - [ ] Hermes ran or checked relevant validation where feasible.
