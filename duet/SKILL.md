@@ -4,6 +4,7 @@ description: "Use when you want Hermes to simulate Ashima Duet: always fan a sub
 version: 0.1.0
 author: Hermes Agent
 license: Apache-2.0
+platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [ashima, duet, brainstorming, claude, gpt, compare]

@@ -4,6 +4,7 @@ description: "Use when the user wants Hermes to simulate Ashima behavior. Route 
 version: 0.1.0
 author: Hermes Agent
 license: Apache-2.0
+platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [ashima, router, orchestration, aria, duet, chorus]

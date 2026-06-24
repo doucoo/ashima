@@ -4,6 +4,7 @@ description: "Use when you want Hermes to simulate Ashima Aria: Hermes orchestra
 version: 0.1.0
 author: Hermes Agent
 license: Apache-2.0
+platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [ashima, aria, orchestration, codex, claude, review]

@@ -4,10 +4,11 @@ description: "Use when you want Hermes to simulate Ashima Chorus: gather change 
 version: 0.1.0
 author: Hermes Agent
 license: Apache-2.0
+platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [ashima, chorus, docs, changelog, release-notes, review]
-    related_skills: [hermes-codex-delegation, github-pr-workflow]
+    related_skills: [hermes-codex-delegation, github-pr-workflow, requesting-code-review]
 ---
 
 # Chorus Documentation for Hermes
