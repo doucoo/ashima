@@ -108,7 +108,7 @@ name: skill-name
 description: "When to use this skill"
 version: 0.1.0
 author: Hermes Agent
-license: MIT
+license: Apache-2.0
 metadata:
   hermes:
     tags: [tag1, tag2]

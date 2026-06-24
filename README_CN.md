@@ -85,9 +85,9 @@ ashima/
 ├── README.md          ← 英文说明
 ├── README_CN.md       ← 中文说明
 ├── CHANGELOG.md       ← 变更日志
-└── LICENSE            ← MIT
+└── LICENSE            ← Apache-2.0
 ```
 
 ## 许可证
 
-MIT
+Apache-2.0
